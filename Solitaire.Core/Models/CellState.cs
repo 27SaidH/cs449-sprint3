@@ -1,4 +1,4 @@
-namespace cs449sprint2.Models
+namespace cs449sprint3.Models
 {
     public enum CellState
     {
