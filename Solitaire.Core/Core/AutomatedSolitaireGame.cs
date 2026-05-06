@@ -1,6 +1,6 @@
-using cs449sprint2.Models;
+using cs449sprint3.Models;
 
-namespace cs449sprint2.Core
+namespace cs449sprint3.Core
 {
     public class AutomatedSolitaireGame : SolitaireGameBase
     {
