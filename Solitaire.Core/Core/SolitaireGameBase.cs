@@ -1,6 +1,6 @@
-using cs449sprint2.Models;
+using cs449sprint3.Models;
 
-namespace cs449sprint2.Core
+namespace cs449sprint3.Core
 {
     public abstract class SolitaireGameBase
     {
@@ -11,13 +11,20 @@ namespace cs449sprint2.Core
             Board = new Board(size, type);
         }
 
-        public virtual bool IsValidMove(int fromRow, int fromCol, int toRow, int toCol)
+        public virtual bool IsValidMove(
+            int fromRow,
+            int fromCol,
+            int toRow,
+            int toCol)
         {
             if (Board == null)
                 return false;
 
-            if (!Board.IsInsideBounds(fromRow, fromCol) || !Board.IsInsideBounds(toRow, toCol))
+            if (!Board.IsInsideBounds(fromRow, fromCol) ||
+                !Board.IsInsideBounds(toRow, toCol))
+            {
                 return false;
+            }
 
             if (Board.GetCell(fromRow, fromCol) != CellState.Peg)
                 return false;
@@ -30,7 +37,8 @@ namespace cs449sprint2.Core
 
             bool validDistance =
                 (Math.Abs(dr) == 2 && dc == 0) ||
-                (Math.Abs(dc) == 2 && dr == 0);
+                (Math.Abs(dc) == 2 && dr == 0) ||
+                (Math.Abs(dr) == 2 && Math.Abs(dc) == 2);
 
             if (!validDistance)
                 return false;
@@ -38,13 +46,14 @@ namespace cs449sprint2.Core
             int middleRow = (fromRow + toRow) / 2;
             int middleCol = (fromCol + toCol) / 2;
 
-            if (!Board.IsInsideBounds(middleRow, middleCol))
-                return false;
-
             return Board.GetCell(middleRow, middleCol) == CellState.Peg;
         }
 
-        public virtual bool MakeMove(int fromRow, int fromCol, int toRow, int toCol)
+        public virtual bool MakeMove(
+            int fromRow,
+            int fromCol,
+            int toRow,
+            int toCol)
         {
             if (!IsValidMove(fromRow, fromCol, toRow, toCol))
                 return false;
@@ -77,13 +86,23 @@ namespace cs449sprint2.Core
                     TryAddMove(moves, r, c, r - 2, c);
                     TryAddMove(moves, r, c, r, c + 2);
                     TryAddMove(moves, r, c, r, c - 2);
+
+                    TryAddMove(moves, r, c, r + 2, c + 2);
+                    TryAddMove(moves, r, c, r - 2, c - 2);
+                    TryAddMove(moves, r, c, r + 2, c - 2);
+                    TryAddMove(moves, r, c, r - 2, c + 2);
                 }
             }
 
             return moves;
         }
 
-        private void TryAddMove(List<Move> moves, int fromRow, int fromCol, int toRow, int toCol)
+        private void TryAddMove(
+            List<Move> moves,
+            int fromRow,
+            int fromCol,
+            int toRow,
+            int toCol)
         {
             if (IsValidMove(fromRow, fromCol, toRow, toCol))
             {
